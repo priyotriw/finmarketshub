@@ -2,7 +2,11 @@
 import SegmentedTabs from "@/app/components/SegmentedTabs";
 
 export type Indicators = {
-  ema: boolean;
+  ma10: boolean;
+  ma20: boolean;
+  ma50: boolean;
+  ma200: boolean;
+  bb: boolean; // Bollinger Bands (20,2)
   rsi: boolean;
   macd: boolean;
 };
@@ -32,7 +36,11 @@ export default function IndicatorToolbar({
       />
       <div className="flex flex-wrap items-center gap-2">
         {[
-          { key: "ema", label: "EMA" },
+          { key: "ma10", label: "MA10" },
+          { key: "ma20", label: "MA20" },
+          { key: "ma50", label: "MA50" },
+          { key: "ma200", label: "MA200" },
+          { key: "bb", label: "Bollinger" },
           { key: "rsi", label: "RSI" },
           { key: "macd", label: "MACD" },
         ].map((it) => (

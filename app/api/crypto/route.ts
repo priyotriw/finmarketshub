@@ -2,15 +2,18 @@ import { NextResponse } from "next/server";
 
 export const revalidate = 10;
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
     // Binance 24hr ticker for all symbols, then filter USDT and slice 100
     const res = await fetch("https://api.binance.com/api/v3/ticker/24hr", { next: { revalidate } });
     if (!res.ok) throw new Error("binance not ok");
     const data = await res.json();
-    const rows = data
-      .filter((d: any) => d.symbol.endsWith("USDT"))
-      .slice(0, 100)
+    const { searchParams } = new URL(req.url);
+    const limitParam = searchParams.get("limit");
+    const limit = limitParam === "all" ? Infinity : Math.max(0, Number(limitParam || 0));
+    const usdt = data.filter((d: any) => d.symbol.endsWith("USDT"));
+    const list = Number.isFinite(limit) && limit > 0 ? usdt.slice(0, limit) : usdt;
+    const rows = list
       .map((d: any) => ({
         name: d.symbol.replace("USDT", ""),
         symbol: d.symbol.replace("USDT", ""),
