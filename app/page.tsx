@@ -49,11 +49,11 @@ export default function Home() {
           </div>
         </div>
         <aside className="lg:col-span-1">
-          <GoogleAds slot="1234567893" />
+          <GoogleAds slot="1796447374" />
           <WatchlistPanel />
           <div className="my-3" />
           <TopMovers />
-          <GoogleAds slot="1234567894" />
+          <GoogleAds slot="1796447374" />
         </aside>
       </div>
     </div>

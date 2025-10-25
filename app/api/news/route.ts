@@ -4,7 +4,16 @@ export const revalidate = 300;
 
 export async function GET(req: Request) {
   const token = process.env.CRYPTOPANIC_TOKEN;
-  if (!token) return NextResponse.json({ articles: [] });
+  if (!token) {
+    // Fallback contoh artikel agar halaman tidak kosong saat token belum diisi
+    const now = new Date().toISOString();
+    const articles = [
+      { id: 1, title: "Bitcoin menembus resistance utama", url: "https://example.com/bitcoin", published_at: now, domain: "example.com", source: "Demo News" },
+      { id: 2, title: "EUR/USD menguat setelah rilis data CPI", url: "https://example.com/eurusd", published_at: now, domain: "example.com", source: "Demo News" },
+      { id: 3, title: "Saham teknologi memimpin reli Nasdaq", url: "https://example.com/nasdaq", published_at: now, domain: "example.com", source: "Demo News" },
+    ];
+    return NextResponse.json({ articles, nextPage: null }, { status: 200 });
+  }
   try {
     const { searchParams } = new URL(req.url);
     const page = searchParams.get("page");

@@ -179,7 +179,7 @@ export default function AnalyzePage() {
           {ind.macd && <IndicatorPane title="MACD (12,26,9)" lines={[{ color: "#ef4444", data: macdPts.macd }, { color: "#22c55e", data: macdPts.signal }]} />}
         </div>
       )}
-      <GoogleAds slot="1234567890" />
+      <GoogleAds slot="1796447374" />
     </div>
   );
 }

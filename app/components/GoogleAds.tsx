@@ -1,32 +1,33 @@
 "use client";
 import { useEffect } from "react";
 
-type Props = { slot: string };
-export default function GoogleAds({ slot }: Props) {
-  const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT || "ca-pub-xxxxxxxxxxxxxxxx";
+export default function GoogleAds({ slot }: { slot: string }) {
+  const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
   useEffect(() => {
-    if (!client.includes("xxxxxxxx")) {
-      try {
-        // @ts-ignore
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
-      } catch (e) {}
-    }
-  }, []);
-  if (client.includes("xxxxxxxx")) {
+    if (!client) return;
+    try {
+      // @ts-ignore
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch {}
+  }, [client, slot]);
+  if (!client) {
     return (
-      <div className="my-4 flex h-24 w-full items-center justify-center rounded-md border border-dashed text-xs text-zinc-500 dark:text-zinc-400">
-        Ad Placeholder (set NEXT_PUBLIC_ADSENSE_CLIENT to enable)
+      <div className="my-3 rounded-xl border bg-white p-3 text-xs opacity-70 dark:border-zinc-800 dark:bg-black">
+        Ad placeholder (isi NEXT_PUBLIC_ADSENSE_CLIENT untuk mengaktifkan iklan)
       </div>
     );
   }
   return (
-    <ins
-      className="adsbygoogle block text-center my-4"
-      style={{ display: "block" }}
-      data-ad-client={client}
-      data-ad-slot={slot}
-      data-ad-format="auto"
-      data-full-width-responsive="true"
-    />
+    <div className="my-3">
+      <ins
+        className="adsbygoogle"
+        style={{ display: "block" } as any}
+        data-ad-client={client}
+        data-ad-slot={slot}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+      {/* Script loader disuntik lewat app/layout.tsx saat client tersedia */}
+    </div>
   );
 }
