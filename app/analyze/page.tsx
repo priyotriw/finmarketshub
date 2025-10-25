@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState, useEffect } from "react";
+import { Suspense, useMemo, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import ChartView from "@/app/components/ChartView";
 import GoogleAds from "@/app/components/GoogleAds";
@@ -78,7 +78,9 @@ function computeSignals(data: { close: number }[]) {
   };
 }
 
-export default function AnalyzePage() {
+export const dynamic = "force-dynamic";
+
+function AnalyzeInner() {
   const search = useSearchParams();
   const symbol = search.get("symbol") || "BTC";
   const pair = search.get("pair") || "BTC/USDT";
@@ -181,5 +183,13 @@ export default function AnalyzePage() {
       )}
       <GoogleAds slot="1796447374" />
     </div>
+  );
+}
+
+export default function AnalyzePage() {
+  return (
+    <Suspense fallback={<div className="mx-auto max-w-7xl px-4 py-6">Memuat Analyze…</div>}>
+      <AnalyzeInner />
+    </Suspense>
   );
 }
