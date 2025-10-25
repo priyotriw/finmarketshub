@@ -1,5 +1,6 @@
 "use client";
 import { useMemo, useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import ChartView from "@/app/components/ChartView";
 import GoogleAds from "@/app/components/GoogleAds";
 import IndicatorToolbar, { type Indicators } from "@/app/components/IndicatorToolbar";
@@ -78,6 +79,9 @@ function computeSignals(data: { close: number }[]) {
 }
 
 export default function AnalyzePage() {
+  const search = useSearchParams();
+  const symbol = search.get("symbol") || "BTC";
+  const pair = search.get("pair") || "BTC/USDT";
   const [data, setData] = useState<{ time: number; open: number; high: number; low: number; close: number }[]>([]);
   const [tf, setTf] = useState("1h");
   const [ind, setInd] = useState<Indicators>({ ema: true, rsi: false, macd: true });
@@ -86,9 +90,12 @@ export default function AnalyzePage() {
     // placeholder: generate synthetic data; integrate with real symbol/timeframe later
     const now = Math.floor(Date.now() / 1000);
     const interval = tf === "1m" ? 60 : tf === "5m" ? 300 : tf === "1h" ? 3600 : 86400;
+    // seed ringan berdasarkan symbol agar pola tidak selalu sama untuk simbol berbeda
+    const seed = Array.from(symbol).reduce((a, c) => a + c.charCodeAt(0), 0) % 97;
     const candles = Array.from({ length: 300 }).map((_, i) => {
       const t = now - (300 - i) * interval;
-      const base = 100 + Math.sin(i / 10) * 2 + Math.random() * 0.5;
+      const rnd = Math.sin((i + seed) / 9) * 0.8 + Math.cos((i + seed) / 17) * 0.6;
+      const base = 100 + Math.sin(i / 10) * 2 + rnd * 0.5;
       const o = base + (Math.random() - 0.5);
       const c = base + (Math.random() - 0.5);
       const h = Math.max(o, c) + Math.random();
@@ -96,7 +103,7 @@ export default function AnalyzePage() {
       return { time: t, open: o, high: h, low: l, close: c };
     });
     setData(candles);
-  }, [tf]);
+  }, [tf, symbol]);
 
   const analysis = useMemo(() => computeSignals(data), [data]);
   const ema20: { time: number; value: number }[] = useMemo(() => {
@@ -138,8 +145,12 @@ export default function AnalyzePage() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6">
-      <div className="mb-4 flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Analyze</h1>
+      <div className="mb-4 flex flex-col gap-1 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold">Analyze: {symbol}</h1>
+          <div className="text-sm text-zinc-600 dark:text-zinc-400">Pair: {pair}</div>
+        </div>
+        <div className="text-xs opacity-80">Timeframe: <span className="rounded-full border px-2 py-0.5">{tf}</span></div>
       </div>
       <div className="mb-3">
         <IndicatorToolbar timeframe={tf} onTimeframe={setTf} indicators={ind} onIndicators={setInd} />
