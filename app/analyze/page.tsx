@@ -415,16 +415,19 @@ function AnalyzeInner() {
       </div>
       <div className="mb-3 space-y-3">
         <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
-          <SegmentedTabs
-            tabs={[
-              { key: "scalp", label: "Scalping" },
-              { key: "intraday", label: "Intraday" },
-              { key: "swing", label: "Swing" },
-              { key: "confluence", label: "Confluence" },
-            ]}
-            value={mode}
-            onChange={(key) => setMode(key as any)}
-          />
+          <div className="flex items-center gap-2">
+            <label className="text-xs text-zinc-600 dark:text-zinc-300">Jenis Trading</label>
+            <select
+              className="rounded-md border bg-white px-2 py-1 text-sm dark:border-zinc-800 dark:bg-black"
+              value={mode}
+              onChange={(e) => setMode(e.target.value as any)}
+            >
+              <option value="scalp">Scalping</option>
+              <option value="intraday">Intraday</option>
+              <option value="swing">Swing</option>
+              <option value="confluence">Confluence</option>
+            </select>
+          </div>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             <SegmentedTabs
               tabs={[{ key: "tv", label: "TradingView" }, { key: "chart", label: "Chart Internal" }]}

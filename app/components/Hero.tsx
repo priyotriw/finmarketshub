@@ -41,10 +41,21 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.995 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.35, delay: 0.12 }}
-          className="relative h-40 rounded-xl bg-gradient-to-br from-blue-500/10 to-emerald-500/10 p-[1px] md:h-48"
+          className="relative h-40 rounded-xl p-2 md:h-48"
         >
-          <div className="h-full w-full rounded-xl bg-white/60 backdrop-blur-sm dark:bg-black/40" />
-          <div className="pointer-events-none absolute inset-0 rounded-xl [background:radial-gradient(380px_110px_at_80%_0%,rgba(59,130,246,.18),transparent)]" />
+          <div className="card flex h-full w-full items-center justify-center rounded-xl border bg-white dark:border-zinc-800 dark:bg-black">
+            <div className="w-full">
+              <div className="mx-auto max-w-sm">
+                <div className="text-center text-xs uppercase tracking-wide text-zinc-500 dark:text-zinc-400">Advertisement</div>
+                <div className="mt-2">
+                  {/* Replace slot with your AdSense slot id */}
+                  <div className="rounded-lg border border-dashed p-2 text-center text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
+                    <span className="opacity-80">AdSense</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </motion.div>
       </div>
     </section>

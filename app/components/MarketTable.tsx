@@ -118,12 +118,12 @@ export default function MarketTable({
       <table className="min-w-full text-sm">
         <thead className="sticky top-0 backdrop-blur">
           <tr className="border-b border-zinc-200/50 bg-white/70 dark:border-zinc-800 dark:bg-black/40">
-            <th className="px-3 py-3 text-left font-medium">Aset</th>
-            <th className="px-3 py-3 text-left font-medium">Pair</th>
-            <th className="px-3 py-3 text-right font-medium">Harga</th>
-            <th className="px-3 py-3 text-right font-medium">24h %</th>
-            <th className="px-3 py-3 text-right font-medium">Volume</th>
-            <th className="px-3 py-3 text-right font-medium">Aksi</th>
+            <th className="px-2 py-2 text-left font-medium sm:px-3 sm:py-3">Aset</th>
+            <th className="px-2 py-2 text-left font-medium sm:px-3 sm:py-3">Pair</th>
+            <th className="px-2 py-2 text-right font-medium sm:px-3 sm:py-3">Harga</th>
+            <th className="px-2 py-2 text-right font-medium sm:px-3 sm:py-3">24h %</th>
+            <th className="px-2 py-2 text-right font-medium sm:px-3 sm:py-3">Volume</th>
+            <th className="px-2 py-2 text-right font-medium sm:px-3 sm:py-3">Aksi</th>
           </tr>
         </thead>
         <tbody>
@@ -133,7 +133,7 @@ export default function MarketTable({
               className="border-b border-zinc-100 last:border-0 transition-colors hover:bg-zinc-50 dark:border-zinc-900 dark:hover:bg-zinc-900/50 cursor-pointer"
               onClick={() => onRowClick?.(r)}
             >
-              <td className="px-3 py-3 font-medium">
+              <td className="px-2 py-2 font-medium sm:px-3 sm:py-3">
                 <button
           title={has(r.symbol, r.pair) ? "Remove from Watchlist" : "Add to Watchlist"}
           className="mr-2 inline-flex items-center text-amber-500 hover:opacity-80"
@@ -143,17 +143,17 @@ export default function MarketTable({
         </button>
                 {r.name}
               </td>
-              <td className="px-3 py-3">{r.pair}</td>
-              <td className="px-3 py-3 text-right tabular-nums">{fmt(r.price)}</td>
-              <td className="px-3 py-3 text-right">
+              <td className="px-2 py-2 sm:px-3 sm:py-3">{r.pair}</td>
+              <td className="px-2 py-2 text-right tabular-nums sm:px-3 sm:py-3">{fmt(r.price)}</td>
+              <td className="px-2 py-2 text-right sm:px-3 sm:py-3">
                 <span className={`inline-flex min-w-16 justify-end rounded-full px-2 py-0.5 text-xs tabular-nums ${
                   (Number(r.change24h) || 0) >= 0 ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300" : "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-300"
                 }`}>
                   {fmtPct(r.change24h)}%
                 </span>
               </td>
-              <td className="px-3 py-3 text-right tabular-nums">{fmt(r.volume)}</td>
-              <td className="px-3 py-3 text-right">
+              <td className="px-2 py-2 text-right tabular-nums sm:px-3 sm:py-3">{fmt(r.volume)}</td>
+              <td className="px-2 py-2 text-right sm:px-3 sm:py-3">
                 <a
                   className="btn-primary text-xs"
                   href={`/analyze?symbol=${encodeURIComponent(r.symbol)}&pair=${encodeURIComponent(r.pair)}`}
