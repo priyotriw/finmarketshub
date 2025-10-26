@@ -14,7 +14,7 @@ const links = [
 export default function MobileNav() {
   const pathname = usePathname();
   return (
-    <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-zinc-200 bg-white/90 px-2 pt-2 pb-[calc(env(safe-area-inset-bottom)+0.5rem)] backdrop-blur dark:border-zinc-800 dark:bg-black/60 sm:hidden">
+    <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-zinc-200 bg-white/90 px-2 pt-2 pb-[calc(env(safe-area-inset-bottom)+1rem)] backdrop-blur dark:border-zinc-800 dark:bg-black/60 sm:hidden">
       <ul className="mx-auto grid max-w-md grid-cols-5 gap-1">
         {links.map((l) => {
           const active = pathname === l.href;
