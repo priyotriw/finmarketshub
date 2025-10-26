@@ -62,7 +62,7 @@ export default function RootLayout({
         <div className="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-b from-zinc-50 to-white dark:from-black dark:to-zinc-950" />
         <div className="pointer-events-none fixed inset-0 -z-10 opacity-40 [background:radial-gradient(600px_200px_at_50%_-20%,rgba(59,130,246,.25),transparent)] dark:opacity-60" />
         <Navbar />
-        <main className="relative z-0 min-h-[80vh]">
+        <main className="relative z-0 min-h-[80vh] pb-20 sm:pb-0">
           {children}
         </main>
         <Footer />
