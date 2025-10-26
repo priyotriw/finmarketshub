@@ -21,13 +21,13 @@ export default function SegmentedTabs({
             key={t.key}
             onClick={() => onChange(t.key)}
             className={`relative z-0 rounded-full px-3 py-1.5 transition-colors ${
-              active ? "text-zinc-900 dark:text-zinc-50" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
+              active ? "text-yellow-700 dark:text-yellow-400" : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100"
             }`}
           >
             {active && (
               <motion.span
                 layoutId="segmented-tabs"
-                className="absolute inset-0 -z-10 rounded-full bg-zinc-100 dark:bg-zinc-900"
+                className="absolute inset-0 -z-10 rounded-full bg-yellow-500/20 dark:bg-yellow-500/20"
                 transition={{ type: "spring", stiffness: 500, damping: 40, mass: 0.3 }}
               />
             )}

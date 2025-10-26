@@ -34,7 +34,7 @@ export default function Home() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Cari aset / pair..."
-            className="w-full rounded-full border px-4 py-2 text-sm bg-white shadow-sm outline-none focus:ring-2 focus:ring-blue-500 dark:border-zinc-800 dark:bg-black"
+            className="w-full rounded-full border px-4 py-2 text-sm bg-white shadow-sm outline-none focus:ring-2 focus:ring-yellow-500 dark:border-zinc-800 dark:bg-black"
           />
         </div>
       </div>

@@ -29,7 +29,7 @@ export default function Hero() {
             transition={{ duration: 0.35, delay: 0.08 }}
             className="mt-4 flex gap-2"
           >
-            <Link href="/analyze" className="rounded-full bg-blue-600 px-5 py-2 text-sm font-medium text-white shadow-sm ring-1 ring-blue-600/10 hover:bg-blue-700">
+            <Link href="/analyze" className="rounded-full bg-yellow-500 px-5 py-2 text-sm font-medium text-black shadow-sm ring-1 ring-yellow-500/20 hover:bg-yellow-400">
               Mulai Analisa
             </Link>
             <Link href="/news" className="rounded-full border px-5 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-900">
