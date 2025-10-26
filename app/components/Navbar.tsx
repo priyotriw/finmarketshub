@@ -37,7 +37,7 @@ export default function Navbar() {
     return () => { channel.unsubscribe(); };
   }, [supabase, pathname]);
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-zinc-200/50 bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/50 dark:border-zinc-800 dark:bg-black/40">
+    <header className="sticky top-0 z-40 w-full border-b border-zinc-200/50 bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/50 dark:border-zinc-800 dark:bg-black/40 hidden sm:block">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
         <Link href="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight">
           <span className="inline-block h-6 w-6 rounded bg-gradient-to-br from-blue-500 to-teal-400"></span>
