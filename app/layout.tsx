@@ -3,6 +3,8 @@ import Script from "next/script";
 import { Inter, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/app/components/Navbar";
+import dynamic from "next/dynamic";
+const MobileNav = dynamic(() => import("@/app/components/MobileNav"), { ssr: false });
 import Footer from "@/app/components/Footer";
 
 const inter = Inter({
@@ -73,6 +75,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <MobileNav />
       </body>
     </html>
   );
