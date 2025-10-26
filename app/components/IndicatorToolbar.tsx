@@ -1,5 +1,6 @@
 "use client";
 import SegmentedTabs from "@/app/components/SegmentedTabs";
+import { useEffect, useState } from "react";
 
 export type Indicators = {
   ma10: boolean;
@@ -23,6 +24,42 @@ export default function IndicatorToolbar({
   onIndicators: (next: Indicators) => void;
 }) {
   const enabledCount = Object.values(indicators).filter(Boolean).length;
+  const [presets, setPresets] = useState<Record<string, Indicators>>({});
+  const [selectedPreset, setSelectedPreset] = useState<string>("");
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem("indicator_presets");
+      if (raw) setPresets(JSON.parse(raw));
+    } catch {}
+  }, []);
+  const savePresets = (next: Record<string, Indicators>) => {
+    setPresets(next);
+    try { localStorage.setItem("indicator_presets", JSON.stringify(next)); } catch {}
+  };
+  const saveCurrentAsPreset = () => {
+    const name = prompt("Nama preset indikator?");
+    if (!name) return;
+    const next = { ...presets, [name]: indicators };
+    savePresets(next);
+    setSelectedPreset(name);
+  };
+  const applyPreset = (name: string) => {
+    const p = presets[name];
+    if (!p) return;
+    onIndicators(p);
+  };
+  const deletePreset = (name: string) => {
+    if (!name) return;
+    if (!confirm(`Hapus preset "${name}"?`)) return;
+    const next = { ...presets };
+    delete next[name];
+    savePresets(next);
+    setSelectedPreset("");
+  };
+  const enabledLabels = Object.entries(indicators)
+    .filter(([, v]) => v)
+    .map(([k]) => k.toUpperCase())
+    .join(", ");
   const toggleGroup = (group: "ma" | "momvol", on: boolean) => {
     if (group === "ma") {
       onIndicators({
@@ -73,6 +110,39 @@ export default function IndicatorToolbar({
           <span className="ml-2 inline-block rounded-full bg-yellow-500/20 px-2 py-0.5 text-[10px] text-yellow-700 dark:text-yellow-400">atur</span>
         </summary>
         <div className="mt-2 space-y-2">
+          {/* Preset controls */}
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <label className="text-[11px] text-zinc-500 dark:text-zinc-400">Preset</label>
+              <select
+                className="rounded-md border bg-white px-2 py-1 text-xs dark:border-zinc-800 dark:bg-black"
+                value={selectedPreset}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSelectedPreset(val);
+                  if (val) applyPreset(val);
+                }}
+              >
+                <option value="">— pilih —</option>
+                {Object.keys(presets).map((n) => (
+                  <option key={n} value={n}>{n}</option>
+                ))}
+              </select>
+            </div>
+            <div className="flex items-center gap-1">
+              <button type="button" className="btn-secondary px-2 py-1 text-[11px]" onClick={saveCurrentAsPreset}>Simpan</button>
+              <button
+                type="button"
+                className="btn-secondary px-2 py-1 text-[11px]"
+                onClick={() => selectedPreset && deletePreset(selectedPreset)}
+                disabled={!selectedPreset}
+                title={!selectedPreset ? "Pilih preset terlebih dahulu" : "Hapus preset ini"}
+              >
+                Hapus
+              </button>
+            </div>
+          </div>
+
           <div className="flex items-center justify-between gap-2">
             <div className="text-[11px] text-zinc-500 dark:text-zinc-400">Pilih indikator untuk ditampilkan</div>
             <div className="flex gap-1">
@@ -139,6 +209,10 @@ export default function IndicatorToolbar({
                 {it.label}
               </label>
             ))}
+          </div>
+          {/* Active summary */}
+          <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
+            {enabledCount > 0 ? `Aktif: ${enabledLabels}` : "Tidak ada indikator aktif"}
           </div>
         </div>
       </details>

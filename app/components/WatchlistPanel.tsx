@@ -8,14 +8,14 @@ export default function WatchlistPanel() {
   const router = useRouter();
   if (!items.length) {
     return (
-      <div className="rounded-xl border bg-white p-3 text-sm opacity-80 shadow-sm dark:border-zinc-800 dark:bg-black">
+      <div className="card rounded-xl border bg-white p-3 text-sm text-zinc-600 shadow-sm dark:border-zinc-800 dark:bg-black dark:text-zinc-300">
         Watchlist kosong. Klik ikon bintang pada aset untuk menambah ke watchlist.
       </div>
     );
   }
   return (
-    <div className="rounded-xl border bg-white p-3 shadow-sm dark:border-zinc-800 dark:bg-black">
-      <div className="mb-2 text-sm font-medium">Watchlist</div>
+    <div className="card rounded-xl border bg-white p-3 shadow-sm dark:border-zinc-800 dark:bg-black">
+      <div className="mb-2 text-sm font-medium text-zinc-700 dark:text-zinc-200">Watchlist</div>
       <ul className="divide-y divide-zinc-100 dark:divide-zinc-900">
         {items.map((it) => (
           <li key={`${it.symbol}-${it.pair}`} className="flex items-center justify-between py-2 text-sm">
@@ -24,7 +24,7 @@ export default function WatchlistPanel() {
               onClick={() => router.push(`/analyze?symbol=${encodeURIComponent(it.symbol)}&pair=${encodeURIComponent(it.pair)}`)}
               title={`${it.name} (${it.pair})`}
             >
-              {it.name} <span className="opacity-60">• {it.pair}</span>
+              {it.name} <span className="text-zinc-500 dark:text-zinc-400">• {it.pair}</span>
             </button>
             <button
               className="ml-2 inline-flex items-center btn-secondary text-xs"
