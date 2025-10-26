@@ -508,11 +508,12 @@ function AnalyzeInner() {
           </div>
           <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
             <SegmentedTabs
-              tabs={[{ key: "tv", label: "TradingView" }, { key: "chart", label: "Chart Internal" }]}
+              tabs={Object.values(overlays).some(Boolean)
+                ? [{ key: "chart", label: "Chart Internal" }]
+                : [{ key: "tv", label: "TradingView" }, { key: "chart", label: "Chart Internal" }]}
               value={view}
               onChange={(key) => {
                 if (key === "tv" && Object.values(overlays).some(Boolean)) {
-                  // Prevent switching to TradingView when overlays are active (overlays only shown on internal chart)
                   return;
                 }
                 setView(key as any);
@@ -545,6 +546,9 @@ function AnalyzeInner() {
                   {it.label}
                 </label>
               ))}
+            </div>
+            <div className="mt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
+              Overlay (Pivot/SR/Fibo/Marks) hanya terlihat pada Chart Internal. Saat overlay aktif, tab TradingView disembunyikan.
             </div>
           </details>
           {/* Reset to defaults */}
