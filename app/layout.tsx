@@ -37,14 +37,21 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className="dark">
       <head>
+        <meta name="color-scheme" content="dark light" />
+        <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
         {/* Theme no-flash: set .dark before paint based on saved preference or OS */}
         <Script id="theme-init" strategy="beforeInteractive">
           {`
             try {
               const stored = localStorage.getItem('theme');
-              // Default to dark unless user explicitly chose light
-              const useDark = stored ? stored === 'dark' : true;
-              document.documentElement.classList.toggle('dark', useDark);
+              if (!stored) {
+                // Persist default dark on first visit
+                localStorage.setItem('theme', 'dark');
+                document.documentElement.classList.add('dark');
+              } else {
+                document.documentElement.classList.toggle('dark', stored === 'dark');
+              }
             } catch {}
           `}
         </Script>

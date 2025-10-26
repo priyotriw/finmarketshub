@@ -37,8 +37,8 @@ export default function Navbar() {
     return () => { channel.unsubscribe(); };
   }, [supabase, pathname]);
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-zinc-200/50 bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/50 dark:border-zinc-800 dark:bg-black/40 hidden sm:block">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-3">
+    <header className="sticky top-0 z-40 w-full border-b border-zinc-200/50 bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/50 dark:border-zinc-800 dark:bg-black/40">
+      <div className="mx-auto hidden max-w-7xl items-center justify-between px-4 py-3 sm:flex">
         <Link href="/" className="flex items-center gap-2 text-lg font-semibold tracking-tight">
           <span className="inline-block h-6 w-6 rounded bg-gradient-to-br from-blue-500 to-teal-400"></span>
           <span>FinMarkets Hub</span>
@@ -71,10 +71,10 @@ export default function Navbar() {
             <ThemeToggle />
           </div>
         </nav>
-        {/* Mobile actions */}
-        <div className="flex items-center gap-2 sm:hidden">
+        {/* Mobile actions hidden (we use bottom nav only) */}
+        <div className="hidden">
           <ThemeToggle />
-          <button aria-label="Menu" onClick={() => setOpen((v) => !v)} className="inline-flex items-center justify-center rounded-md border px-2 py-2 text-lg hover:bg-zinc-100 dark:hover:bg-zinc-900">
+          <button aria-label="Menu" className="inline-flex items-center justify-center rounded-md border px-2 py-2 text-lg hover:bg-zinc-100 dark:hover:bg-zinc-900">
             <FaBars />
           </button>
         </div>
@@ -82,7 +82,7 @@ export default function Navbar() {
 
       {/* Mobile dropdown menu */}
       {open && (
-        <div className="sm:hidden">
+        <div className="hidden">
           <nav className="mx-auto max-w-7xl px-4 pb-3">
             <div className="rounded-lg border bg-white p-2 shadow-sm dark:border-zinc-800 dark:bg-black">
               {links.map((l) => {
