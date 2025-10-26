@@ -32,7 +32,7 @@ export default function Hero() {
             <Link href="/analyze" className="rounded-full bg-yellow-500 px-5 py-2 text-sm font-medium text-black shadow-sm ring-1 ring-yellow-500/20 hover:bg-yellow-400">
               Mulai Analisa
             </Link>
-            <Link href="/news" className="rounded-full border px-5 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-900">
+            <Link href="/news" className="btn-secondary text-sm">
               Lihat Berita
             </Link>
           </motion.div>
