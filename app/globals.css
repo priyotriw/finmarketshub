@@ -40,7 +40,11 @@ h1,h2,h3 {
 }
 
 /* Dark theme primary look: white text, yellow headlines */
+body {
+  background-color: #ffffff;
+}
 .dark body {
+  background-color: #000000;
   color: #ffffff;
 }
 .dark h1, .dark h2, .dark h3 {
