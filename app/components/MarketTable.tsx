@@ -106,7 +106,7 @@ export default function MarketTable({
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border bg-white shadow-sm dark:border-zinc-800 dark:bg-black">
+    <div className="card overflow-x-auto rounded-lg border bg-white dark:border-zinc-800 dark:bg-black">
       <table className="min-w-full text-sm">
         <thead className="sticky top-0 backdrop-blur">
           <tr className="border-b border-zinc-200/50 bg-white/70 dark:border-zinc-800 dark:bg-black/40">

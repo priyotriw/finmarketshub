@@ -1,21 +1,24 @@
 @import "tailwindcss";
 
-/* Use class-based dark mode in Tailwind v4 */
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  --radius: 12px;
+  --radius-sm: 10px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 6px 24px rgba(0,0,0,0.08);
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-sans);
+  --font-alt: var(--font-alt);
+  --font-mono: var(--font-mono);
 }
 
-/* Dark mode via .dark class on <html> */
 .dark {
   --background: #0a0a0a;
   --foreground: #ededed;
@@ -24,5 +27,39 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,h2,h3 {
+  letter-spacing: -0.02em;
+  font-family: var(--font-alt), var(--font-sans), ui-sans-serif, system-ui;
+}
+
+/* Dark theme primary look: white text, yellow headlines */
+.dark body {
+  color: #ffffff;
+}
+.dark h1, .dark h2, .dark h3 {
+  color: #facc15; /* Yellow-400 */
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+code, pre, kbd, samp {
+  font-family: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.card {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
 }

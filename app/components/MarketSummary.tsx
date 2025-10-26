@@ -17,11 +17,11 @@ export default function MarketSummary() {
   const totalMarkets = (crypto?.length || 0) + (forex?.length || 0) + (stocks?.length || 0);
 
   const Card = ({ title, value, icon, sub }: { title: string; value: string; icon: React.ReactNode; sub?: string }) => (
-    <div className="rounded-xl border bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-black">
+    <div className="card rounded-xl border bg-white p-4 dark:border-zinc-800 dark:bg-black">
       <div className="flex items-center justify-between">
         <div>
           <div className="text-xs uppercase tracking-wide text-zinc-500 dark:text-zinc-400">{title}</div>
-          <div className="mt-1 text-2xl font-semibold">{value}</div>
+          <div className="mt-1 text-2xl font-semibold tabular-nums">{value}</div>
           {sub && <div className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{sub}</div>}
         </div>
         <div className="text-zinc-400">{icon}</div>

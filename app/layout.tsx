@@ -1,18 +1,26 @@
 import type { Metadata } from "next";
 import Script from "next/script";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/app/components/Navbar";
 import Footer from "@/app/components/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const inter = Inter({
+  variable: "--font-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const jakarta = Plus_Jakarta_Sans({
+  variable: "--font-alt",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const jetbrains = JetBrains_Mono({
+  variable: "--font-mono",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -34,8 +42,8 @@ export default function RootLayout({
           {`
             try {
               const stored = localStorage.getItem('theme');
-              const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-              const useDark = stored ? stored === 'dark' : prefersDark;
+              // Default to dark unless user explicitly chose light
+              const useDark = stored ? stored === 'dark' : true;
               document.documentElement.classList.toggle('dark', useDark);
             } catch {}
           `}
@@ -50,7 +58,7 @@ export default function RootLayout({
           />
         )}
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${inter.variable} ${jakarta.variable} ${jetbrains.variable} antialiased`}>
         <div className="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-b from-zinc-50 to-white dark:from-black dark:to-zinc-950" />
         <div className="pointer-events-none fixed inset-0 -z-10 opacity-40 [background:radial-gradient(600px_200px_at_50%_-20%,rgba(59,130,246,.25),transparent)] dark:opacity-60" />
         <Navbar />

@@ -465,11 +465,11 @@ function AnalyzeInner() {
       </div>
 
       {view === "tv" ? (
-        <div className="rounded-xl border bg-white p-3 shadow-sm dark:border-zinc-800 dark:bg-black">
+        <div className="card rounded-xl border bg-white p-3 dark:border-zinc-800 dark:bg-black">
           <TradingView symbol={symbol} pair={pair} timeframe={tf} />
         </div>
       ) : (
-        <div className="rounded-xl border bg-white p-3 shadow-sm dark:border-zinc-800 dark:bg-black">
+        <div className="card rounded-xl border bg-white p-3 dark:border-zinc-800 dark:bg-black">
           <ChartView
             data={data}
             ma10={ind.ma10 ? ma10 : undefined}
@@ -488,7 +488,7 @@ function AnalyzeInner() {
         </div>
       )}
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-        <div className="rounded-xl border bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-black">
+        <div className="card rounded-xl border bg-white p-4 dark:border-zinc-800 dark:bg-black">
           <p className="text-sm opacity-70">Analisa Otomatis & Rekomendasi</p>
           <div className="mt-1 text-lg font-semibold">{recommendation.headline}</div>
           <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
@@ -497,7 +497,7 @@ function AnalyzeInner() {
             ))}
           </ul>
         </div>
-        <div className="rounded-xl border bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-black">
+        <div className="card rounded-xl border bg-white p-4 dark:border-zinc-800 dark:bg-black">
           <p className="text-sm opacity-70">Catatan</p>
           <div className="mt-1 text-sm opacity-80">
             Catatan: Indikator RSI/MACD/EMA adalah sederhana untuk demo. Integrasi indikator penuh dapat dilakukan dengan perhitungan teknikal yang lebih lengkap.
@@ -512,7 +512,7 @@ function AnalyzeInner() {
         const sr = computeSR(data.slice(-200), lastClose);
         return (
           <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
-            <div className="rounded-xl border bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-black">
+            <div className="card rounded-xl border bg-white p-4 dark:border-zinc-800 dark:bg-black">
               <p className="text-sm opacity-70">Pivot Levels (Classic)</p>
               {piv ? (
                 <ul className="mt-2 grid grid-cols-2 gap-2 text-sm">
@@ -528,7 +528,7 @@ function AnalyzeInner() {
                 <div className="mt-2 text-sm opacity-70">Data tidak cukup.</div>
               )}
             </div>
-            <div className="rounded-xl border bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-black">
+            <div className="card rounded-xl border bg-white p-4 dark:border-zinc-800 dark:bg-black">
               <p className="text-sm opacity-70">Support/Resistance Terdekat</p>
               <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
                 <div>
@@ -565,7 +565,7 @@ function AnalyzeInner() {
         const perUnitRisk = Math.abs(entry - sl) || 1e-9;
         const positionSize = riskAmount / perUnitRisk;
         return (
-          <div className="mt-4 rounded-xl border bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-black">
+          <div className="mt-4 card rounded-xl border bg-white p-4 dark:border-zinc-800 dark:bg-black">
             <p className="text-sm opacity-70">Template Risiko / SL / TP</p>
             <ul className="mt-2 grid grid-cols-2 gap-2 text-sm">
               <li>Harga Saat Ini: {price.toFixed(2)}</li>
