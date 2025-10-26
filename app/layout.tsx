@@ -35,7 +35,7 @@ export default function RootLayout({
 }>) {
   const adsClient = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="dark">
       <head>
         {/* Theme no-flash: set .dark before paint based on saved preference or OS */}
         <Script id="theme-init" strategy="beforeInteractive">
