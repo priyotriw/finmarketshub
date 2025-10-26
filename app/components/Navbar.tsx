@@ -103,6 +103,11 @@ export default function Navbar() {
                   </Link>
                 );
               })}
+              <div className="my-2 h-px bg-zinc-200 dark:bg-zinc-800" />
+              <div className="flex items-center justify-between px-2 py-1">
+                <span className="text-xs text-zinc-600 dark:text-zinc-300">Tema</span>
+                <ThemeToggle />
+              </div>
             </div>
           </nav>
         </div>
