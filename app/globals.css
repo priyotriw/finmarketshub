@@ -65,6 +65,14 @@ code, pre, kbd, samp {
   box-shadow: var(--shadow-sm);
 }
 
+/* Subtle divider utility */
+.divider {
+  border-top: 1px solid rgba(24,24,27,0.08);
+}
+.dark .divider {
+  border-top: 1px solid rgba(244,244,245,0.08);
+}
+
 /* Simple brand button utility */
 .btn-primary {
   background-color: var(--brand);

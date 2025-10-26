@@ -105,6 +105,14 @@ export default function MarketTable({
     );
   }
 
+  if (filtered.length === 0) {
+    return (
+      <div className="card rounded-xl border bg-white p-4 text-sm text-zinc-600 dark:border-zinc-800 dark:bg-black dark:text-zinc-300">
+        Tidak ada hasil untuk pencarian ini.
+      </div>
+    );
+  }
+
   return (
     <div className="card overflow-x-auto rounded-lg border bg-white dark:border-zinc-800 dark:bg-black">
       <table className="min-w-full text-sm">

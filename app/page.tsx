@@ -19,6 +19,7 @@ export default function Home() {
       <div className="mb-4 sm:mb-6">
         <MarketSummary />
       </div>
+      <div className="divider my-3 sm:my-4" />
       <div className="mb-2 mt-1 flex flex-col items-start justify-between gap-2 sm:mb-3 sm:mt-2 sm:flex-row sm:items-center sm:gap-3">
         <SegmentedTabs
           tabs={[
