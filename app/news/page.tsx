@@ -39,6 +39,7 @@ export default function NewsPage() {
           onChange={setCat}
         />
       </div>
+      <div className="divider my-3" />
 
       {isLoading && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">

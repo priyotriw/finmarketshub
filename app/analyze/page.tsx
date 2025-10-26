@@ -160,6 +160,7 @@ function AnalyzeInner() {
   const [equity, setEquity] = useState(1000); // USD example
   const [markMode, setMarkMode] = useState<"entry" | "sl" | "tp" | null>(null);
   const [marks, setMarks] = useState<{ entry?: number; sl?: number; tp?: number }>({});
+  const [overlays, setOverlays] = useState<{ pivot: boolean; sr: boolean; fibo: boolean; marks: boolean }>({ pivot: true, sr: true, fibo: true, marks: true });
 
   useEffect(() => {
     // placeholder: generate synthetic data; integrate with real symbol/timeframe later
@@ -191,14 +192,15 @@ function AnalyzeInner() {
         if (typeof obj.riskPct === "number") setRiskPct(obj.riskPct);
         if (typeof obj.equity === "number") setEquity(obj.equity);
         if (obj.marks) setMarks(obj.marks);
+        if (obj.overlays) setOverlays({ pivot: true, sr: true, fibo: true, marks: true, ...obj.overlays });
       }
     } catch {}
   }, []);
   useEffect(() => {
     try {
-      localStorage.setItem("analyze_prefs", JSON.stringify({ ind, th, riskPct, equity, marks }));
+      localStorage.setItem("analyze_prefs", JSON.stringify({ ind, th, riskPct, equity, marks, overlays }));
     } catch {}
-  }, [ind, th, riskPct, equity, marks]);
+  }, [ind, th, riskPct, equity, marks, overlays]);
 
   // Auto set recommended timeframe per mode if user switches mode
   useEffect(() => {
@@ -328,7 +330,7 @@ function AnalyzeInner() {
 
     // Fibonacci suggestions based on recent swing
     const lookback = Math.min(200, data.length);
-    if (lookback > 20) {
+    if (overlays.fibo && lookback > 20) {
       const slice = data.slice(-lookback);
       const highs = slice.map((d) => d.high);
       const lows = slice.map((d) => d.low);
@@ -362,7 +364,7 @@ function AnalyzeInner() {
   // Build horizontal price lines for ChartView (Pivot/SR/Fibo)
   const priceLines = useMemo(() => {
     const lines: { price: number; color?: string; title?: string }[] = [];
-    if (piv) {
+    if (overlays.pivot && piv) {
       lines.push({ price: piv.P, color: "#64748b", title: "P" });
       lines.push({ price: piv.R1, color: "#ef4444", title: "R1" });
       lines.push({ price: piv.R2, color: "#ef4444", title: "R2" });
@@ -371,8 +373,10 @@ function AnalyzeInner() {
       lines.push({ price: piv.S2, color: "#22c55e", title: "S2" });
       lines.push({ price: piv.S3, color: "#22c55e", title: "S3" });
     }
-    sr.supports.forEach((p, i) => lines.push({ price: p, color: "#16a34a", title: `Sup${i+1}` }));
-    sr.resistances.forEach((p, i) => lines.push({ price: p, color: "#dc2626", title: `Res${i+1}` }));
+    if (overlays.sr) {
+      sr.supports.forEach((p, i) => lines.push({ price: p, color: "#16a34a", title: `Sup${i+1}` }));
+      sr.resistances.forEach((p, i) => lines.push({ price: p, color: "#dc2626", title: `Res${i+1}` }));
+    }
 
     // Fibo lines from latest 200 bars
     const lookback = Math.min(200, data.length);
@@ -396,11 +400,13 @@ function AnalyzeInner() {
       }
     }
     // User marked lines
-    if (marks.entry != null) lines.push({ price: marks.entry, color: "#2563eb", title: "ENTRY" });
-    if (marks.sl != null) lines.push({ price: marks.sl, color: "#ef4444", title: "SL" });
-    if (marks.tp != null) lines.push({ price: marks.tp, color: "#22c55e", title: "TP" });
+    if (overlays.marks) {
+      if (marks.entry != null) lines.push({ price: marks.entry, color: "#2563eb", title: "ENTRY" });
+      if (marks.sl != null) lines.push({ price: marks.sl, color: "#ef4444", title: "SL" });
+      if (marks.tp != null) lines.push({ price: marks.tp, color: "#22c55e", title: "TP" });
+    }
     return lines;
-  }, [piv, sr, data, ma50, ma200, marks]);
+  }, [piv, sr, data, ma50, ma200, marks, overlays]);
 
   
 
@@ -412,6 +418,78 @@ function AnalyzeInner() {
           <div className="text-sm text-zinc-600 dark:text-zinc-400">Pair: {pair}</div>
         </div>
         <div className="text-xs opacity-80">Timeframe: <span className="rounded-full border px-2 py-0.5">{tf}</span></div>
+      </div>
+      {/* Mobile consolidated controls */}
+      <div className="sm:hidden sticky top-12 z-30 mb-3">
+        <details className="group rounded-md border bg-white px-3 py-2 text-sm shadow-sm dark:border-zinc-800 dark:bg-black">
+          <summary className="flex cursor-pointer list-none items-center justify-between text-xs text-zinc-600 dark:text-zinc-300">
+            <span>Tampilan</span>
+            <span className="ml-2 inline-block rounded-full bg-yellow-500/20 px-2 py-0.5 text-[10px] text-yellow-700 dark:text-yellow-400">atur</span>
+          </summary>
+          <div className="mt-2 space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <label className="text-xs text-zinc-600 dark:text-zinc-300">Jenis Trading</label>
+              <select className="rounded-md border bg-white px-2 py-1 text-sm dark:border-zinc-800 dark:bg-black" value={mode} onChange={(e) => setMode(e.target.value as any)}>
+                <option value="scalp">Scalping</option>
+                <option value="intraday">Intraday</option>
+                <option value="swing">Swing</option>
+                <option value="confluence">Confluence</option>
+              </select>
+            </div>
+            <div className="flex items-center justify-between gap-2">
+              <label className="text-xs text-zinc-600 dark:text-zinc-300">Timeframe</label>
+              <select className="rounded-md border bg-white px-2 py-1 text-sm dark:border-zinc-800 dark:bg-black" value={tf} onChange={(e) => setTf(e.target.value)}>
+                <option value="1m">1m</option>
+                <option value="5m">5m</option>
+                <option value="1h">1h</option>
+                <option value="1d">1d</option>
+              </select>
+            </div>
+            <div>
+              <div className="mb-1 text-xs text-zinc-600 dark:text-zinc-300">Indikator</div>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { key: "ma10", label: "MA10" },
+                  { key: "ma20", label: "MA20" },
+                  { key: "ma50", label: "MA50" },
+                  { key: "ma200", label: "MA200" },
+                  { key: "bb", label: "Bollinger" },
+                  { key: "rsi", label: "RSI" },
+                  { key: "macd", label: "MACD" },
+                ].map((it) => (
+                  <label key={it.key} className="inline-flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-900">
+                    <input type="checkbox" checked={(ind as any)[it.key]} onChange={(e) => setInd({ ...ind, [it.key]: e.target.checked } as any)} />
+                    {it.label}
+                  </label>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div className="mb-1 text-xs text-zinc-600 dark:text-zinc-300">Tampilkan di Chart</div>
+              <div className="grid grid-cols-2 gap-2">
+                {[
+                  { key: "pivot", label: "Pivot" },
+                  { key: "sr", label: "Support/Resistance" },
+                  { key: "fibo", label: "Fibonacci" },
+                  { key: "marks", label: "Entry/SL/TP" },
+                ].map((it) => (
+                  <label key={it.key} className="inline-flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-900">
+                    <input
+                      type="checkbox"
+                      checked={(overlays as any)[it.key]}
+                      onChange={(e) => {
+                        const next = { ...overlays, [it.key]: e.target.checked } as any;
+                        setOverlays(next);
+                        if (Object.values(next).some(Boolean) && view === "tv") setView("chart");
+                      }}
+                    />
+                    {it.label}
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
+        </details>
       </div>
       <div className="mb-3 space-y-3">
         <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
@@ -432,9 +510,57 @@ function AnalyzeInner() {
             <SegmentedTabs
               tabs={[{ key: "tv", label: "TradingView" }, { key: "chart", label: "Chart Internal" }]}
               value={view}
-              onChange={(key) => setView(key as any)}
+              onChange={(key) => {
+                if (key === "tv" && Object.values(overlays).some(Boolean)) {
+                  // Prevent switching to TradingView when overlays are active (overlays only shown on internal chart)
+                  return;
+                }
+                setView(key as any);
+              }}
             />
             <IndicatorToolbar timeframe={tf} onTimeframe={setTf} indicators={ind} onIndicators={setInd} />
+          {/* Overlay controls */}
+          <details className="group rounded-md border px-3 py-2 text-sm dark:border-zinc-800">
+            <summary className="flex cursor-pointer list-none items-center justify-between text-xs text-zinc-600 dark:text-zinc-300">
+              <span>Tampilkan di Chart</span>
+              <span className="ml-2 inline-block rounded-full bg-yellow-500/20 px-2 py-0.5 text-[10px] text-yellow-700 dark:text-yellow-400">pilih</span>
+            </summary>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              {[
+                { key: "pivot", label: "Pivot" },
+                { key: "sr", label: "Support/Resistance" },
+                { key: "fibo", label: "Fibonacci" },
+                { key: "marks", label: "Entry/SL/TP" },
+              ].map((it) => (
+                <label key={it.key} className="inline-flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-900">
+                  <input
+                    type="checkbox"
+                    checked={(overlays as any)[it.key]}
+                    onChange={(e) => {
+                      const next = { ...overlays, [it.key]: e.target.checked } as any;
+                      setOverlays(next);
+                      if (Object.values(next).some(Boolean) && view === "tv") setView("chart");
+                    }}
+                  />
+                  {it.label}
+                </label>
+              ))}
+            </div>
+          </details>
+          {/* Reset to defaults */}
+          <button
+            className="btn-secondary"
+            onClick={() => {
+              setMode("intraday");
+              setTf("5m");
+              setInd({ ma10: false, ma20: true, ma50: true, ma200: false, bb: false, rsi: true, macd: true });
+              setOverlays({ pivot: true, sr: true, fibo: true, marks: true });
+              setTh(THRESHOLDS);
+              setRiskPct(0.01);
+            }}
+          >
+            Reset ke Default
+          </button>
           {/* Threshold & Risk Controls */}
           <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
               <label className="flex items-center gap-1">RSI OB
