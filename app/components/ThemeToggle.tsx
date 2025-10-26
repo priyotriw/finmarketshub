@@ -6,8 +6,8 @@ export default function ThemeToggle() {
   const [dark, setDark] = useState<boolean>(false);
   useEffect(() => {
     const stored = typeof window !== "undefined" ? localStorage.getItem("theme") : null;
-    const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
-    const initial = stored ? stored === "dark" : prefersDark;
+    // Default to dark if no stored preference
+    const initial = stored ? stored === "dark" : true;
     setDark(initial);
     document.documentElement.classList.toggle("dark", initial);
   }, []);
@@ -21,7 +21,7 @@ export default function ThemeToggle() {
     <button
       aria-label="Toggle theme"
       onClick={toggle}
-      className="inline-flex items-center gap-2 rounded-full border px-3 py-2 text-xs transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900"
+      className="inline-flex items-center gap-2 btn-secondary"
     >
       {dark ? <FaSun /> : <FaMoon />}
       <span className="hidden sm:inline">{dark ? "Light" : "Dark"}</span>

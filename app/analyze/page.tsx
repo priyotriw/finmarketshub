@@ -433,7 +433,7 @@ function AnalyzeInner() {
             />
             <IndicatorToolbar timeframe={tf} onTimeframe={setTf} indicators={ind} onIndicators={setInd} />
           {/* Threshold & Risk Controls */}
-          <div className="flex flex-wrap items-center gap-2 text-xs">
+          <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
               <label className="flex items-center gap-1">RSI OB
                 <input type="number" className="w-14 rounded border bg-transparent px-2 py-1" value={th.rsiOverbought}
                   onChange={(e) => setTh({ ...th, rsiOverbought: Number(e.target.value) })} />
@@ -452,13 +452,13 @@ function AnalyzeInner() {
               </label>
             </div>
             {/* Marking controls */}
-            <div className="flex flex-wrap items-center gap-2 text-xs">
+            <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
               <span>Tandai:</span>
-              <button onClick={() => setMarkMode(markMode === "entry" ? null : "entry")} className={`rounded border px-2 py-1 ${markMode === "entry" ? "bg-blue-600 text-white" : "hover:bg-zinc-100 dark:hover:bg-zinc-900"}`}>Entry</button>
-              <button onClick={() => setMarkMode(markMode === "sl" ? null : "sl")} className={`rounded border px-2 py-1 ${markMode === "sl" ? "bg-red-600 text-white" : "hover:bg-zinc-100 dark:hover:bg-zinc-900"}`}>SL</button>
-              <button onClick={() => setMarkMode(markMode === "tp" ? null : "tp")} className={`rounded border px-2 py-1 ${markMode === "tp" ? "bg-green-600 text-white" : "hover:bg-zinc-100 dark:hover:bg-zinc-900"}`}>TP</button>
-              <button onClick={() => setMarks({})} className="rounded border px-2 py-1 hover:bg-zinc-100 dark:hover:bg-zinc-900">Clear</button>
-              <div className="opacity-70">{marks.entry!=null && `E:${marks.entry.toFixed(2)}`} {marks.sl!=null && ` SL:${marks.sl.toFixed(2)}`} {marks.tp!=null && ` TP:${marks.tp.toFixed(2)}`}</div>
+              <button onClick={() => setMarkMode(markMode === "entry" ? null : "entry")} className={`${markMode === "entry" ? "btn-primary" : "btn-secondary"}`}>Entry</button>
+              <button onClick={() => setMarkMode(markMode === "sl" ? null : "sl")} className={`${markMode === "sl" ? "btn-primary" : "btn-secondary"}`}>SL</button>
+              <button onClick={() => setMarkMode(markMode === "tp" ? null : "tp")} className={`${markMode === "tp" ? "btn-primary" : "btn-secondary"}`}>TP</button>
+              <button onClick={() => setMarks({})} className="btn-secondary">Clear</button>
+              <div className="text-zinc-600 dark:text-zinc-300">{marks.entry!=null && `E:${marks.entry.toFixed(2)}`} {marks.sl!=null && ` SL:${marks.sl.toFixed(2)}`} {marks.tp!=null && ` TP:${marks.tp.toFixed(2)}`}</div>
             </div>
           </div>
         </div>
@@ -489,17 +489,17 @@ function AnalyzeInner() {
       )}
       <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
         <div className="card rounded-xl border bg-white p-4 dark:border-zinc-800 dark:bg-black">
-          <p className="text-sm opacity-70">Analisa Otomatis & Rekomendasi</p>
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">Analisa Otomatis & Rekomendasi</p>
           <div className="mt-1 text-lg font-semibold">{recommendation.headline}</div>
-          <ul className="mt-2 list-disc pl-5 text-sm space-y-1">
+          <ul className="mt-2 list-disc pl-5 text-sm space-y-1 text-zinc-600 dark:text-zinc-300">
             {recommendation.notes.map((r, i) => (
               <li key={i}>{r}</li>
             ))}
           </ul>
         </div>
         <div className="card rounded-xl border bg-white p-4 dark:border-zinc-800 dark:bg-black">
-          <p className="text-sm opacity-70">Catatan</p>
-          <div className="mt-1 text-sm opacity-80">
+          <p className="text-sm text-zinc-600 dark:text-zinc-300">Catatan</p>
+          <div className="mt-1 text-sm text-zinc-600 dark:text-zinc-300">
             Catatan: Indikator RSI/MACD/EMA adalah sederhana untuk demo. Integrasi indikator penuh dapat dilakukan dengan perhitungan teknikal yang lebih lengkap.
           </div>
         </div>
@@ -513,7 +513,7 @@ function AnalyzeInner() {
         return (
           <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
             <div className="card rounded-xl border bg-white p-4 dark:border-zinc-800 dark:bg-black">
-              <p className="text-sm opacity-70">Pivot Levels (Classic)</p>
+              <p className="text-sm text-zinc-600 dark:text-zinc-300">Pivot Levels (Classic)</p>
               {piv ? (
                 <ul className="mt-2 grid grid-cols-2 gap-2 text-sm">
                   <li>P: {piv.P.toFixed(2)}</li>
@@ -529,8 +529,8 @@ function AnalyzeInner() {
               )}
             </div>
             <div className="card rounded-xl border bg-white p-4 dark:border-zinc-800 dark:bg-black">
-              <p className="text-sm opacity-70">Support/Resistance Terdekat</p>
-              <div className="mt-2 grid grid-cols-2 gap-2 text-sm">
+              <p className="text-sm text-zinc-600 dark:text-zinc-300">Support/Resistance Terdekat</p>
+              <div className="mt-2 grid grid-cols-2 gap-2 text-sm text-zinc-600 dark:text-zinc-300">
                 <div>
                   <div className="font-medium">Support</div>
                   <ul className="list-disc pl-5">
@@ -566,8 +566,8 @@ function AnalyzeInner() {
         const positionSize = riskAmount / perUnitRisk;
         return (
           <div className="mt-4 card rounded-xl border bg-white p-4 dark:border-zinc-800 dark:bg-black">
-            <p className="text-sm opacity-70">Template Risiko / SL / TP</p>
-            <ul className="mt-2 grid grid-cols-2 gap-2 text-sm">
+            <p className="text-sm text-zinc-600 dark:text-zinc-300">Template Risiko / SL / TP</p>
+            <ul className="mt-2 grid grid-cols-2 gap-2 text-sm text-zinc-600 dark:text-zinc-300">
               <li>Harga Saat Ini: {price.toFixed(2)}</li>
               <li>Entry (patokan): {entry.toFixed(2)} {trendUp ? "(buy dip)" : "(sell rally)"}</li>
               <li>Stop Loss: {sl.toFixed(2)}</li>
@@ -576,7 +576,7 @@ function AnalyzeInner() {
               <li>Risk per trade: {(riskPct * 100).toFixed(1)}% (${riskAmount.toFixed(2)})</li>
               <li>Position size perkiraan: {positionSize.toFixed(4)} unit</li>
             </ul>
-            <div className="mt-2 text-xs opacity-70">Catatan: Angka ini contoh berbasis MA/Fibo sederhana. Sesuaikan dengan volatilitas dan manajemen risiko Anda.</div>
+            <div className="mt-2 text-xs text-zinc-600 dark:text-zinc-300">Catatan: Angka ini contoh berbasis MA/Fibo sederhana. Sesuaikan dengan volatilitas dan manajemen risiko Anda.</div>
           </div>
         );
       })()}

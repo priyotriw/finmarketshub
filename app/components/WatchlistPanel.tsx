@@ -27,7 +27,7 @@ export default function WatchlistPanel() {
               {it.name} <span className="opacity-60">• {it.pair}</span>
             </button>
             <button
-              className="ml-2 inline-flex items-center rounded-md border px-2 py-1 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-900"
+              className="ml-2 inline-flex items-center btn-secondary text-xs"
               onClick={() => remove(it.symbol, it.pair)}
               title="Hapus"
             >
