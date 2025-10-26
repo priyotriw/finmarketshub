@@ -1,6 +1,7 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import GoogleAds from "@/app/components/GoogleAds";
 
 export default function Hero() {
   return (
@@ -44,14 +45,11 @@ export default function Hero() {
           className="relative h-40 rounded-xl p-2 md:h-48"
         >
           <div className="card flex h-full w-full items-center justify-center rounded-xl border bg-white dark:border-zinc-800 dark:bg-black">
-            <div className="w-full">
+            <div className="w-full px-2">
               <div className="mx-auto max-w-sm">
                 <div className="text-center text-xs uppercase tracking-wide text-zinc-500 dark:text-zinc-400">Advertisement</div>
                 <div className="mt-2">
-                  {/* Replace slot with your AdSense slot id */}
-                  <div className="rounded-lg border border-dashed p-2 text-center text-xs text-zinc-500 dark:border-zinc-800 dark:text-zinc-400">
-                    <span className="opacity-80">AdSense</span>
-                  </div>
+                  <GoogleAds slot={(process.env.NEXT_PUBLIC_ADSENSE_HERO_SLOT as string) || ""} />
                 </div>
               </div>
             </div>

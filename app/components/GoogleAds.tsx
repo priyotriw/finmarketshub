@@ -4,16 +4,16 @@ import { useEffect } from "react";
 export default function GoogleAds({ slot }: { slot: string }) {
   const client = process.env.NEXT_PUBLIC_ADSENSE_CLIENT;
   useEffect(() => {
-    if (!client) return;
+    if (!client || !slot) return;
     try {
       // @ts-ignore
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch {}
   }, [client, slot]);
-  if (!client) {
+  if (!client || !slot) {
     return (
       <div className="my-3 rounded-xl border bg-white p-3 text-xs opacity-70 dark:border-zinc-800 dark:bg-black">
-        Ad placeholder (isi NEXT_PUBLIC_ADSENSE_CLIENT untuk mengaktifkan iklan)
+        Ad placeholder (pastikan NEXT_PUBLIC_ADSENSE_CLIENT dan slot iklan terisi)
       </div>
     );
   }

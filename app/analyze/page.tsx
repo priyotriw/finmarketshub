@@ -417,7 +417,7 @@ function AnalyzeInner() {
           <h1 className="text-2xl font-semibold">Analyze: {symbol}</h1>
           <div className="text-sm text-zinc-600 dark:text-zinc-400">Pair: {pair}</div>
         </div>
-        <div className="text-xs opacity-80">Timeframe: <span className="rounded-full border px-2 py-0.5">{tf}</span></div>
+        {/* Removed duplicate timeframe badge to reduce clutter */}
       </div>
       {/* Mobile consolidated controls */}
       <div className="sm:hidden sticky top-12 z-30 mb-3">
@@ -491,101 +491,89 @@ function AnalyzeInner() {
           </div>
         </details>
       </div>
-      <div className="mb-3 space-y-3">
-        <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
-          <div className="flex items-center gap-2">
-            <label className="text-xs text-zinc-600 dark:text-zinc-300">Jenis Trading</label>
-            <select
-              className="rounded-md border bg-white px-2 py-1 text-sm dark:border-zinc-800 dark:bg-black"
-              value={mode}
-              onChange={(e) => setMode(e.target.value as any)}
-            >
-              <option value="scalp">Scalping</option>
-              <option value="intraday">Intraday</option>
-              <option value="swing">Swing</option>
-              <option value="confluence">Confluence</option>
-            </select>
-          </div>
-          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-3">
-            <SegmentedTabs
-              tabs={Object.values(overlays).some(Boolean)
-                ? [{ key: "chart", label: "Chart Internal" }]
-                : [{ key: "tv", label: "TradingView" }, { key: "chart", label: "Chart Internal" }]}
-              value={view}
-              onChange={(key) => {
-                if (key === "tv" && Object.values(overlays).some(Boolean)) {
-                  return;
-                }
-                setView(key as any);
-              }}
-            />
-            <IndicatorToolbar timeframe={tf} onTimeframe={setTf} indicators={ind} onIndicators={setInd} />
-          {/* Overlay controls */}
-          <details className="group rounded-md border px-3 py-2 text-sm dark:border-zinc-800">
-            <summary className="flex cursor-pointer list-none items-center justify-between text-xs text-zinc-600 dark:text-zinc-300">
-              <span>Tampilkan di Chart</span>
-              <span className="ml-2 inline-block rounded-full bg-yellow-500/20 px-2 py-0.5 text-[10px] text-yellow-700 dark:text-yellow-400">pilih</span>
-            </summary>
-            <div className="mt-2 grid grid-cols-2 gap-2">
-              {[
-                { key: "pivot", label: "Pivot" },
-                { key: "sr", label: "Support/Resistance" },
-                { key: "fibo", label: "Fibonacci" },
-                { key: "marks", label: "Entry/SL/TP" },
-              ].map((it) => (
-                <label key={it.key} className="inline-flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-900">
-                  <input
-                    type="checkbox"
-                    checked={(overlays as any)[it.key]}
-                    onChange={(e) => {
-                      const next = { ...overlays, [it.key]: e.target.checked } as any;
-                      setOverlays(next);
-                      if (Object.values(next).some(Boolean) && view === "tv") setView("chart");
-                    }}
-                  />
-                  {it.label}
-                </label>
-              ))}
+      <div className="mb-3">
+        <div className="card rounded-xl border bg-white p-3 dark:border-zinc-800 dark:bg-black">
+          <div className="grid grid-cols-1 items-center gap-2 sm:grid-cols-12">
+            {/* Mode */}
+            <div className="sm:col-span-3 flex items-center gap-2">
+              <label className="text-xs text-zinc-600 dark:text-zinc-300">Jenis Trading</label>
+              <select className="rounded-md border bg-white px-2 py-1 text-sm dark:border-zinc-800 dark:bg-black" value={mode} onChange={(e) => setMode(e.target.value as any)}>
+                <option value="scalp">Scalping</option>
+                <option value="intraday">Intraday</option>
+                <option value="swing">Swing</option>
+                <option value="confluence">Confluence</option>
+              </select>
             </div>
-            <div className="mt-2 text-[11px] text-zinc-500 dark:text-zinc-400">
-              Overlay (Pivot/SR/Fibo/Marks) hanya terlihat pada Chart Internal. Saat overlay aktif, tab TradingView disembunyikan.
+            {/* View tabs */}
+            <div className="sm:col-span-3">
+              <SegmentedTabs
+                tabs={Object.values(overlays).some(Boolean) ? [{ key: "chart", label: "Chart Internal" }] : [{ key: "tv", label: "TradingView" }, { key: "chart", label: "Chart Internal" }]}
+                value={view}
+                onChange={(key) => {
+                  if (key === "tv" && Object.values(overlays).some(Boolean)) return;
+                  setView(key as any);
+                }}
+              />
             </div>
-          </details>
-          {/* Reset to defaults */}
-          <button
-            className="btn-secondary"
-            onClick={() => {
-              setMode("intraday");
-              setTf("5m");
-              setInd({ ma10: false, ma20: true, ma50: true, ma200: false, bb: false, rsi: true, macd: true });
-              setOverlays({ pivot: true, sr: true, fibo: true, marks: true });
-              setTh(THRESHOLDS);
-              setRiskPct(0.01);
-            }}
-          >
-            Reset ke Default
-          </button>
-          {/* Threshold & Risk Controls */}
-          <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
+            {/* Timeframe + Indicators */}
+            <div className="sm:col-span-4">
+              <IndicatorToolbar timeframe={tf} onTimeframe={setTf} indicators={ind} onIndicators={setInd} />
+            </div>
+            {/* Overlays */}
+            <div className="sm:col-span-2">
+              <details className="group rounded-md border px-3 py-2 text-sm dark:border-zinc-800">
+                <summary className="flex cursor-pointer list-none items-center justify-between text-xs text-zinc-600 dark:text-zinc-300">
+                  <span>Tampilkan di Chart</span>
+                  <span className="ml-2 inline-block rounded-full bg-yellow-500/20 px-2 py-0.5 text-[10px] text-yellow-700 dark:text-yellow-400">pilih</span>
+                </summary>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  {[
+                    { key: "pivot", label: "Pivot" },
+                    { key: "sr", label: "Support/Resistance" },
+                    { key: "fibo", label: "Fibonacci" },
+                    { key: "marks", label: "Entry/SL/TP" },
+                  ].map((it) => (
+                    <label key={it.key} className="inline-flex cursor-pointer items-center gap-2 rounded-md px-2 py-1 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-900">
+                      <input type="checkbox" checked={(overlays as any)[it.key]} onChange={(e) => {
+                        const next = { ...overlays, [it.key]: e.target.checked } as any;
+                        setOverlays(next);
+                        if (Object.values(next).some(Boolean) && view === "tv") setView("chart");
+                      }} />
+                      {it.label}
+                    </label>
+                  ))}
+                </div>
+                <div className="mt-2 text-[11px] text-zinc-500 dark:text-zinc-400">Overlay hanya terlihat pada Chart Internal.</div>
+              </details>
+            </div>
+            {/* Reset */}
+            <div className="sm:col-span-12 flex justify-start sm:justify-end">
+              <button className="btn-secondary" onClick={() => {
+                setMode("intraday");
+                setTf("5m");
+                setInd({ ma10: false, ma20: true, ma50: true, ma200: false, bb: false, rsi: true, macd: true });
+                setOverlays({ pivot: true, sr: true, fibo: true, marks: true });
+                setTh(THRESHOLDS);
+                setRiskPct(0.01);
+              }}>Reset ke Default</button>
+            </div>
+            {/* Threshold & Risk */}
+            <div className="sm:col-span-12 flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
               <label className="flex items-center gap-1">RSI OB
-                <input type="number" className="w-14 rounded border bg-transparent px-2 py-1" value={th.rsiOverbought}
-                  onChange={(e) => setTh({ ...th, rsiOverbought: Number(e.target.value) })} />
+                <input type="number" className="w-14 rounded border bg-transparent px-2 py-1" value={th.rsiOverbought} onChange={(e) => setTh({ ...th, rsiOverbought: Number(e.target.value) })} />
               </label>
               <label className="flex items-center gap-1">RSI OS
-                <input type="number" className="w-14 rounded border bg-transparent px-2 py-1" value={th.rsiOversold}
-                  onChange={(e) => setTh({ ...th, rsiOversold: Number(e.target.value) })} />
+                <input type="number" className="w-14 rounded border bg-transparent px-2 py-1" value={th.rsiOversold} onChange={(e) => setTh({ ...th, rsiOversold: Number(e.target.value) })} />
               </label>
               <label className="flex items-center gap-1">Risk%
-                <input type="number" step="0.1" className="w-16 rounded border bg-transparent px-2 py-1" value={(riskPct*100).toFixed(1)}
-                  onChange={(e) => setRiskPct(Math.max(0, Number(e.target.value) / 100))} />
+                <input type="number" step="0.1" className="w-16 rounded border bg-transparent px-2 py-1" value={(riskPct*100).toFixed(1)} onChange={(e) => setRiskPct(Math.max(0, Number(e.target.value) / 100))} />
               </label>
               <label className="flex items-center gap-1">Equity
-                <input type="number" className="w-20 rounded border bg-transparent px-2 py-1" value={equity}
-                  onChange={(e) => setEquity(Math.max(0, Number(e.target.value)))} />
+                <input type="number" className="w-20 rounded border bg-transparent px-2 py-1" value={equity} onChange={(e) => setEquity(Math.max(0, Number(e.target.value)))} />
               </label>
             </div>
-            {/* Marking controls */}
-            <div className="flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
+            {/* Marking */}
+            <div className="sm:col-span-12 flex flex-wrap items-center gap-2 text-xs text-zinc-600 dark:text-zinc-300">
               <span>Tandai:</span>
               <button onClick={() => setMarkMode(markMode === "entry" ? null : "entry")} className={`${markMode === "entry" ? "btn-primary" : "btn-secondary"}`}>Entry</button>
               <button onClick={() => setMarkMode(markMode === "sl" ? null : "sl")} className={`${markMode === "sl" ? "btn-primary" : "btn-secondary"}`}>SL</button>
