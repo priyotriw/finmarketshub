@@ -73,7 +73,7 @@ export default function NewsPage() {
       {data?.nextPage && (
         <div className="mt-4 flex justify-center">
           <button
-            className="rounded-full border px-4 py-2 text-sm hover:bg-zinc-100 dark:hover:bg-zinc-900"
+            className="btn-primary"
             onClick={async () => {
               const next = await fetch(`/api/news?page=${data.nextPage}`).then((r) => r.json());
               const merged = { articles: [...articles, ...(next.articles || [])], nextPage: next.nextPage };

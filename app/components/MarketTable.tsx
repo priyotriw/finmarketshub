@@ -147,7 +147,7 @@ export default function MarketTable({
               <td className="px-3 py-3 text-right tabular-nums">{fmt(r.volume)}</td>
               <td className="px-3 py-3 text-right">
                 <a
-                  className="rounded-md border px-3 py-1 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-900"
+                  className="btn-primary text-xs"
                   href={`/analyze?symbol=${encodeURIComponent(r.symbol)}&pair=${encodeURIComponent(r.pair)}`}
                   onClick={(e) => e.stopPropagation()}
                 >
